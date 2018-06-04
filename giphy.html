@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Music Bands</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        crossorigin="anonymous">
+        <link rel="stylesheet" type "text/css" href="assets/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+
+</head>
+
+<body>
+
+
+    <h1 class="text-center">Welcome to the World of Music</h1>
+    <br>
+    <hr>
+
+    <div class="container">
+            <form>
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="text" id="band-input" class="form-control" placeholder="Add your favorite band">
+                    </div>
+                    <input id="addNewBand" type="submit" class="btn btn-success" value="Add your favorite band">
+                    <span id="entry"></span>
+                </div>
+            </div>
+            </form>
+            <hr>
+
+    <div id="music"></div>
+    <br>
+
+
+    <div id="ratings">
+        <div class="row">
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        var bands = ["Gaslight Anthem", "Bruce SpringSteen", "Eminem", "Manchester Orchestra", "Jack White", "Elton John", "Moon Taxi", "Mumford and Sons"];
+        var bandImage = "";
+       
+        function showButtons() {
+            $("#music").empty();
+            $("#band-input").val("");
+            for (var i = 0; i < bands.length; i++) {
+                var button = $("<button class='btn btn-primary'>");
+                button.addClass("band");
+                button.attr("band-name", bands[i]);
+                button.text(bands[i]);
+                $("#music").append(button);
+                $("#music").append(" ");
+            }
+        }
+        showButtons();
+       
+        $("#addNewBand").on("click", function (event) {
+            $("#entry").empty();
+            event.preventDefault();
+            var bandInput = $("#band-input").val().trim();
+            var bandTerm = $(this).attr("band-name");
+
+        });
+        $(document).on("click", ".band", display);
+        function display() {
+
+            $("#entry").empty();
+
+            var bandTerm = $(this).attr("band-name");
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                bandTerm + "&limit=10&api_key=dc6zaTOxFJmzC";
+
+            $.ajax({ url: queryURL, method: "GET" }).done(function (response) {
+                for (var j = 0; j < response.data.length; j++) {
+
+                    var active = response.data[j].images.fixed_width.url;
+                
+                    var still = response.data[j].images.fixed_width_still.url;
+                    var rating = "Rating: " + (response.data[j].rating).toUpperCase();
+    
+                    var bandImage = $("<img>");
+
+                    
+                
+                    var ratingDiv = $("<div id='ratingDiv'>" + rating + "</div>");
+
+                   
+
+                    bandImage.attr({ "active": active, "still": still, "src": still, "state": "still" });
+        
+                    var ratingAndImage = $("<div>");
+
+                    $(ratingAndImage).prepend(ratingDiv, bandImage);
+    
+                    $("#ratings").prepend(ratingAndImage);
+
+                    $(bandImage).on("click", function (event) {
+                        $("#entry").empty();
+
+                        var state = $(this).attr("state");
+                        var source = $(this).attr("src");
+                        if (state === "still") {
+                            $(this).attr("src", $(this).attr("active"));
+                            $(this).attr("state", "active");
+                        }
+                        else {
+                            $(this).attr("src", $(this).attr("still"));
+                            $(this).attr("state", "still");
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

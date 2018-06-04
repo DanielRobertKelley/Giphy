@@ -1,0 +1,46 @@
+h1 {
+    text-align:center;
+    font: size 40px;
+}
+form{
+    float:right;
+}
+.form-control {
+    font-size:15px;
+}
+#music {
+    text-align:center;
+    font-size:25px;
+    font-weight:bold;
+    padding:15px;
+    color:white;
+}
+.btn {
+    background-color:black;
+
+}
+#ratings {
+    font-size:25px;
+}
+body {
+    background-image: url"assets/../music4.png";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
