@@ -70,7 +70,7 @@
             event.preventDefault();
             var bandInput = $("#band-input").val().trim();
             var bandNew = $(this).attr("band-name");
-            $("#music").text(bandNew)
+            $("#music").append(bandNew)
         })
     }
 
@@ -80,13 +80,18 @@
         $(document).on("click", ".band", display);
         function display() {
 
-            $("#entry").empty();
+            //$("#entry").empty();
 
             var bandNew = $(this).attr("band-name");
             var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
                 bandNew + "&limit=10&api_key=dc6zaTOxFJmzC";
 
-            $.ajax({ url: queryURL, method: "GET" }).done(function (response) {
+            $.ajax({ 
+                url: queryURL, 
+                method: "GET" 
+            })
+                
+                .done(function (response) {
                 for (var j = 0; j < response.data.length; j++) {
 
                     var active = response.data[j].images.fixed_width.url;
